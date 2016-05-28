@@ -66,7 +66,8 @@ wait_for_linuxboot() {
   local TIMEOUT=100
   echo -n "flashing...";
   for ((i=$TIMEOUT; i>0; i--)) {
-    if lsusb |grep -q "0525:a4a7"; then
+    # support both CDC (a47a) and CDC+Ether (a4aa) composite
+    if lsusb |grep -q -e "0525:a4a7" -e "0525:a4aa"; then
       echo "OK"
       return 0;
     fi
@@ -77,4 +78,3 @@ wait_for_linuxboot() {
   echo "TIMEOUT";
   return 1
 }
-
